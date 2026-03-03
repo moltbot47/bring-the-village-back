@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
+import Matches from './pages/Matches'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile/edit" element={<EditProfile />} />
+            <Route path="/matches" element={<Matches />} />
           </Routes>
         </Layout>
       </AuthProvider>

@@ -49,15 +49,17 @@ export default function Dashboard() {
         )}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--space-md)' }}>
-          <Card>
-            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Matches</h3>
-            <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-strong)' }}>
-              Coming Soon
-            </p>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-              We're building the matching engine now
-            </p>
-          </Card>
+          <div onClick={() => navigate('/matches')} style={{ cursor: 'pointer' }}>
+            <Card>
+              <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Matches</h3>
+              <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--orange)' }}>
+                Find Matches
+              </p>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                See compatible parents near you
+              </p>
+            </Card>
+          </div>
 
           <Card>
             <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Time Bank</h3>

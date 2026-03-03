@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "accounts",
     "waitlist",
     "donations",
+    "matching",
 ]
 
 MIDDLEWARE = [

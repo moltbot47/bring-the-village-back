@@ -84,4 +84,52 @@ export const getWaitlistCount = () =>
 export const getDonationStats = () =>
   api.get<DonationStatsResponse>('/donations/stats/')
 
+// Matching
+export interface MatchSuggestion {
+  id: number
+  profile: UserProfile
+  total_score: number
+  proximity_score: number
+  age_overlap_score: number
+  schedule_score: number
+  needs_offers_score: number
+  ai_reason: string
+}
+
+export interface MatchRequestItem {
+  id: number
+  from_user: number
+  to_user: number
+  from_user_name: string
+  to_user_name: string
+  status: string
+  message: string
+  created_at: string
+}
+
+export interface ConnectionItem {
+  id: number
+  user_id: number
+  display_name: string
+  bio: string
+  kids_ages: string
+  chapter: string
+  connected_at: string
+}
+
+export const getMatchSuggestions = () =>
+  api.get<{ suggestions: MatchSuggestion[] }>('/matches/suggestions/')
+
+export const sendMatchRequest = (to_user: number, message: string) =>
+  api.post('/matches/request/', { to_user, message })
+
+export const respondMatchRequest = (requestId: number, action: 'accept' | 'decline') =>
+  api.patch(`/matches/request/${requestId}/respond/`, { action })
+
+export const getMyRequests = () =>
+  api.get<{ incoming: MatchRequestItem[]; outgoing: MatchRequestItem[] }>('/matches/requests/')
+
+export const getMyConnections = () =>
+  api.get<{ connections: ConnectionItem[] }>('/matches/connections/')
+
 export default api
