@@ -10,4 +10,6 @@ urlpatterns = [
     path("api/matches/", include("matching.urls")),
     path("api/timebank/", include("timebank.urls")),
     path("api/messages/", include("messaging.urls")),
+    path("api/community/", include("community.urls")),
+    path("api/feedback/", include("feedback.urls")),
 ]

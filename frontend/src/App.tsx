@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Matches from './pages/Matches'
 import Messages from './pages/Messages'
+import FeedbackWidget from './components/FeedbackWidget'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/messages/:userId" element={<Messages />} />
           </Routes>
         </Layout>
+        <FeedbackWidget />
       </AuthProvider>
     </BrowserRouter>
   )

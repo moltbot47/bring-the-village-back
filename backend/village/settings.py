@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     "matching",
     "timebank",
     "messaging",
+    "community",
+    "feedback",
 ]
 
 MIDDLEWARE = [
