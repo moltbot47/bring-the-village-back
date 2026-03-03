@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Matches from './pages/Matches'
+import Messages from './pages/Messages'
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/matches" element={<Matches />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/messages/:userId" element={<Messages />} />
           </Routes>
         </Layout>
       </AuthProvider>

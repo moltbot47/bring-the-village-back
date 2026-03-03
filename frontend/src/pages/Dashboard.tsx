@@ -1,11 +1,24 @@
+import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { getTimeBankBalance, getConversations, TimeBankBalance } from '../api/client'
 import Button3D from '../components/Button3D'
 import Card from '../components/Card'
 
 export default function Dashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [balance, setBalance] = useState<TimeBankBalance | null>(null)
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    if (!user) return
+    getTimeBankBalance().then(res => setBalance(res.data)).catch(() => {})
+    getConversations().then(res => {
+      const total = res.data.conversations.reduce((sum, c) => sum + c.unread_count, 0)
+      setUnreadCount(total)
+    }).catch(() => {})
+  }, [user])
 
   if (!user) {
     navigate('/login')
@@ -23,7 +36,7 @@ export default function Dashboard() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xl)' }}>
           <div>
             <h1 style={{ fontSize: '1.75rem', marginBottom: '4px' }}>
-              Hey, {user.display_name} 👋
+              Hey, {user.display_name}
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
               {user.chapter.charAt(0).toUpperCase() + user.chapter.slice(1)} Chapter
@@ -48,15 +61,27 @@ export default function Dashboard() {
           </Card>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--space-md)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-md)' }}>
           <div onClick={() => navigate('/matches')} style={{ cursor: 'pointer' }}>
             <Card>
-              <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Matches</h3>
+              <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Matches</h3>
               <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--orange)' }}>
-                Find Matches
+                Find
               </p>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                See compatible parents near you
+                Compatible parents near you
+              </p>
+            </Card>
+          </div>
+
+          <div onClick={() => navigate('/messages')} style={{ cursor: 'pointer' }}>
+            <Card>
+              <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Messages</h3>
+              <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: unreadCount > 0 ? 'var(--red)' : 'var(--text-strong)' }}>
+                {unreadCount > 0 ? `${unreadCount} new` : 'Inbox'}
+              </p>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                Chat with your connections
               </p>
             </Card>
           </div>
@@ -64,15 +89,15 @@ export default function Dashboard() {
           <Card>
             <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Time Bank</h3>
             <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-strong)' }}>
-              0 hrs
+              {balance ? `${balance.balance >= 0 ? '+' : ''}${balance.balance} hrs` : '0 hrs'}
             </p>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Give time, get time back
+              {balance ? `${balance.hours_given}h given, ${balance.hours_received}h received` : 'Give time, get time back'}
             </p>
           </Card>
 
           <Card>
-            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Chapter</h3>
+            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Chapter</h3>
             <p style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-strong)' }}>
               {user.chapter.charAt(0).toUpperCase() + user.chapter.slice(1)}
             </p>

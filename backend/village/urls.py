@@ -8,4 +8,6 @@ urlpatterns = [
     path("api/waitlist/", include("waitlist.urls")),
     path("api/donations/", include("donations.urls")),
     path("api/matches/", include("matching.urls")),
+    path("api/timebank/", include("timebank.urls")),
+    path("api/messages/", include("messaging.urls")),
 ]

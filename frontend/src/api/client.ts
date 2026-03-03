@@ -132,4 +132,65 @@ export const getMyRequests = () =>
 export const getMyConnections = () =>
   api.get<{ connections: ConnectionItem[] }>('/matches/connections/')
 
+// Time Bank
+export interface TimeBankBalance {
+  hours_given: number
+  hours_received: number
+  balance: number
+}
+
+export interface TimeCreditItem {
+  id: number
+  giver: number
+  receiver: number
+  giver_name: string
+  receiver_name: string
+  hours: number
+  category: string
+  description: string
+  date: string
+  confirmed_by_receiver: boolean
+  created_at: string
+}
+
+export const getTimeBankBalance = () =>
+  api.get<TimeBankBalance>('/timebank/balance/')
+
+export const logTime = (data: { receiver: number; hours: number; category: string; description: string; date: string }) =>
+  api.post('/timebank/log/', data)
+
+export const confirmTime = (creditId: number) =>
+  api.patch(`/timebank/confirm/${creditId}/`)
+
+export const getTimeHistory = () =>
+  api.get<{ history: TimeCreditItem[] }>('/timebank/history/')
+
+// Messaging
+export interface ConversationItem {
+  id: number
+  other_user_id: number
+  other_user_name: string
+  last_message: string | null
+  last_message_at: string
+  unread_count: number
+}
+
+export interface MessageItem {
+  id: number
+  sender_id: number
+  sender_name: string
+  text: string
+  is_mine: boolean
+  created_at: string
+}
+
+export const getConversations = () =>
+  api.get<{ conversations: ConversationItem[] }>('/messages/')
+
+export const getMessages = (userId: number) =>
+  api.get<{ messages: MessageItem[] }>(`/messages/${userId}/`)
+
+export const sendMessage = (userId: number, text: string) =>
+  api.post(`/messages/${userId}/`, { text })
+
 export default api
