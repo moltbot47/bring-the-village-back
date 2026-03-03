@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import ErrorBoundary from './components/ErrorBoundary'
 import Layout from './components/Layout'
 import Landing from './pages/Landing'
 import Register from './pages/Register'
@@ -12,6 +13,7 @@ import FeedbackWidget from './components/FeedbackWidget'
 
 function App() {
   return (
+    <ErrorBoundary>
     <BrowserRouter>
       <AuthProvider>
         <Layout>
@@ -29,6 +31,7 @@ function App() {
         <FeedbackWidget />
       </AuthProvider>
     </BrowserRouter>
+    </ErrorBoundary>
   )
 }
 

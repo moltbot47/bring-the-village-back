@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from matching.models import MatchConnection
+
 from .models import Conversation, Message
 
 
@@ -37,8 +39,17 @@ def conversations_view(request):
 @permission_classes([IsAuthenticated])
 def messages_view(request, user_id):
     """GET messages with a user, or POST a new message."""
-    # Find or create conversation (order by ID)
+    # Verify users are matched before allowing conversation
     ids = sorted([request.user.id, user_id])
+    is_connected = MatchConnection.objects.filter(
+        user_a_id=ids[0], user_b_id=ids[1], is_active=True
+    ).exists()
+    if not is_connected:
+        return Response(
+            {"detail": "You can only message matched connections."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
     convo, _ = Conversation.objects.get_or_create(
         user_a_id=ids[0], user_b_id=ids[1]
     )
