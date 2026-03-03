@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # Local
     "core",
+    "accounts",
     "waitlist",
     "donations",
 ]
@@ -86,6 +87,16 @@ REST_FRAMEWORK = {
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Session auth for API (cookies)
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173",
+).split(",")
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "America/Chicago"

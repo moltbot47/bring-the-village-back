@@ -1,0 +1,110 @@
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import Button3D from '../components/Button3D'
+import Card from '../components/Card'
+
+export default function Dashboard() {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  if (!user) {
+    navigate('/login')
+    return null
+  }
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
+  return (
+    <div style={{ padding: 'var(--space-xl) var(--space-lg)', background: 'var(--bg)', minHeight: '80vh' }}>
+      <div className="container" style={{ maxWidth: '900px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xl)' }}>
+          <div>
+            <h1 style={{ fontSize: '1.75rem', marginBottom: '4px' }}>
+              Hey, {user.display_name} 👋
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+              {user.chapter.charAt(0).toUpperCase() + user.chapter.slice(1)} Chapter
+            </p>
+          </div>
+          <Button3D variant="secondary" size="sm" onClick={handleLogout}>
+            Sign Out
+          </Button3D>
+        </div>
+
+        {!user.is_onboarded && (
+          <Card highlighted style={{ marginBottom: 'var(--space-lg)', padding: 'var(--space-lg)' }}>
+            <h3 style={{ fontSize: '16px', marginBottom: 'var(--space-sm)' }}>
+              Complete Your Profile
+            </h3>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+              Tell us what help you need and what you can offer so we can find your best matches.
+            </p>
+            <Button3D onClick={() => navigate('/profile/edit')} size="sm">
+              Complete Profile
+            </Button3D>
+          </Card>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--space-md)' }}>
+          <Card>
+            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Matches</h3>
+            <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-strong)' }}>
+              Coming Soon
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              We're building the matching engine now
+            </p>
+          </Card>
+
+          <Card>
+            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Time Bank</h3>
+            <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-strong)' }}>
+              0 hrs
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              Give time, get time back
+            </p>
+          </Card>
+
+          <Card>
+            <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Your Chapter</h3>
+            <p style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-strong)' }}>
+              {user.chapter.charAt(0).toUpperCase() + user.chapter.slice(1)}
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              Local events coming soon
+            </p>
+          </Card>
+        </div>
+
+        <Card style={{ marginTop: 'var(--space-lg)', padding: 'var(--space-lg)' }}>
+          <h3 style={{ fontSize: '16px', marginBottom: 'var(--space-sm)' }}>About You</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', fontSize: '14px' }}>
+            <div>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '2px' }}>Kids' Ages</p>
+              <p style={{ fontWeight: 600 }}>{user.kids_ages || 'Not set'}</p>
+            </div>
+            <div>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '2px' }}>Zip Code</p>
+              <p style={{ fontWeight: 600 }}>{user.zip_code}</p>
+            </div>
+            <div>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '2px' }}>I Need Help With</p>
+              <p style={{ fontWeight: 600 }}>{user.needs || 'Not set yet'}</p>
+            </div>
+            <div>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '2px' }}>I Can Offer</p>
+              <p style={{ fontWeight: 600 }}>{user.offers || 'Not set yet'}</p>
+            </div>
+          </div>
+          <Button3D variant="secondary" size="sm" onClick={() => navigate('/profile/edit')} style={{ marginTop: 'var(--space-md)' }}>
+            Edit Profile
+          </Button3D>
+        </Card>
+      </div>
+    </div>
+  )
+}

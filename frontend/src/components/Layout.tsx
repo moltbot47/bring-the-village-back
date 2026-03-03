@@ -1,10 +1,39 @@
 import { ReactNode } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 interface LayoutProps {
   children: ReactNode
 }
 
+const navLinkStyle: React.CSSProperties = {
+  color: 'var(--text-muted)',
+  textDecoration: 'none',
+  fontSize: '14px',
+  fontWeight: 500,
+}
+
+const ctaBtnStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  padding: '8px 16px',
+  background: 'var(--orange)',
+  color: 'white',
+  borderRadius: '8px',
+  fontWeight: 600,
+  fontSize: '14px',
+  textDecoration: 'none',
+  border: '1.5px solid var(--orange-shadow)',
+  boxShadow: '0 2px 0 var(--orange-shadow)',
+  transform: 'translateY(-1px)',
+  transition: 'all 0.1s',
+}
+
 export default function Layout({ children }: LayoutProps) {
+  const { user, loading } = useAuth()
+  const location = useLocation()
+  const isLanding = location.pathname === '/'
+
   return (
     <>
       <a href="#main-content" className="skip-link">
@@ -25,7 +54,7 @@ export default function Layout({ children }: LayoutProps) {
           justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', textDecoration: 'none' }}>
           <span style={{ fontSize: '24px' }} role="img" aria-label="Village">
             🏘️
           </span>
@@ -39,51 +68,32 @@ export default function Layout({ children }: LayoutProps) {
           >
             Bring the Village Back
           </span>
-        </div>
+        </Link>
 
         <nav style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'center' }}>
-          <a
-            href="#how-it-works"
-            style={{
-              color: 'var(--text-muted)',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: 500,
-            }}
-          >
-            How It Works
-          </a>
-          <a
-            href="#support"
-            style={{
-              color: 'var(--text-muted)',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: 500,
-            }}
-          >
-            Support Us
-          </a>
-          <a
-            href="#waitlist"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '8px 16px',
-              background: 'var(--orange)',
-              color: 'white',
-              borderRadius: '8px',
-              fontWeight: 600,
-              fontSize: '14px',
-              textDecoration: 'none',
-              border: '1.5px solid var(--orange-shadow)',
-              boxShadow: '0 2px 0 var(--orange-shadow)',
-              transform: 'translateY(-1px)',
-              transition: 'all 0.1s',
-            }}
-          >
-            Join the Waitlist
-          </a>
+          {isLanding && (
+            <>
+              <a href="#how-it-works" style={navLinkStyle}>How It Works</a>
+              <a href="#support" style={navLinkStyle}>Support Us</a>
+            </>
+          )}
+
+          {!loading && (
+            user ? (
+              <Link to="/dashboard" style={ctaBtnStyle}>
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" style={navLinkStyle}>Sign In</Link>
+                {isLanding ? (
+                  <a href="#waitlist" style={ctaBtnStyle}>Join the Waitlist</a>
+                ) : (
+                  <Link to="/register" style={ctaBtnStyle}>Sign Up</Link>
+                )}
+              </>
+            )
+          )}
         </nav>
       </header>
 
