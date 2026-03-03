@@ -96,6 +96,7 @@ export default function WaitlistForm() {
             name="full_name"
             type="text"
             required
+            autoComplete="name"
             value={formData.full_name}
             onChange={handleChange}
             style={inputStyle}
@@ -110,6 +111,7 @@ export default function WaitlistForm() {
             name="email"
             type="email"
             required
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
             style={inputStyle}
@@ -124,6 +126,7 @@ export default function WaitlistForm() {
             name="zip_code"
             type="text"
             required
+            autoComplete="postal-code"
             value={formData.zip_code}
             onChange={handleChange}
             style={inputStyle}

@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard'
 import EditProfile from './pages/EditProfile'
 import Matches from './pages/Matches'
 import Messages from './pages/Messages'
+import Status from './pages/Status'
 import FeedbackWidget from './components/FeedbackWidget'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/matches" element={<Matches />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/messages/:userId" element={<Messages />} />
+            <Route path="/status" element={<Status />} />
           </Routes>
         </Layout>
         <FeedbackWidget />

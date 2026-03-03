@@ -128,6 +128,7 @@ export default function Landing() {
 
           {(waitlistCount !== null || donationStats !== null) && (
             <div
+              aria-live="polite"
               style={{
                 display: 'flex',
                 justifyContent: 'center',

@@ -74,20 +74,20 @@ export default function Register() {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 'var(--space-md)' }}>
               <label htmlFor="display_name" style={labelStyle}>Your Name</label>
-              <input id="display_name" name="display_name" type="text" required value={form.display_name} onChange={handleChange} style={inputStyle} />
+              <input id="display_name" name="display_name" type="text" required autoComplete="name" value={form.display_name} onChange={handleChange} style={inputStyle} />
             </div>
             <div style={{ marginBottom: 'var(--space-md)' }}>
               <label htmlFor="email" style={labelStyle}>Email</label>
-              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} style={inputStyle} />
+              <input id="email" name="email" type="email" required autoComplete="email" value={form.email} onChange={handleChange} style={inputStyle} />
             </div>
             <div style={{ marginBottom: 'var(--space-md)' }}>
               <label htmlFor="password" style={labelStyle}>Password</label>
-              <input id="password" name="password" type="password" required minLength={8} value={form.password} onChange={handleChange} style={inputStyle} />
+              <input id="password" name="password" type="password" required autoComplete="new-password" minLength={8} value={form.password} onChange={handleChange} style={inputStyle} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
               <div>
                 <label htmlFor="zip_code" style={labelStyle}>Zip Code</label>
-                <input id="zip_code" name="zip_code" type="text" required value={form.zip_code} onChange={handleChange} style={inputStyle} />
+                <input id="zip_code" name="zip_code" type="text" required autoComplete="postal-code" value={form.zip_code} onChange={handleChange} style={inputStyle} />
               </div>
               <div>
                 <label htmlFor="chapter" style={labelStyle}>Chapter</label>

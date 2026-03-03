@@ -62,7 +62,14 @@ export default function Dashboard() {
         )}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-md)' }}>
-          <div onClick={() => navigate('/matches')} style={{ cursor: 'pointer' }}>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate('/matches')}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') navigate('/matches') }}
+            style={{ cursor: 'pointer' }}
+            aria-label="View matches — compatible parents near you"
+          >
             <Card>
               <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Matches</h3>
               <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--orange)' }}>
@@ -74,7 +81,14 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          <div onClick={() => navigate('/messages')} style={{ cursor: 'pointer' }}>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate('/messages')}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') navigate('/messages') }}
+            style={{ cursor: 'pointer' }}
+            aria-label={unreadCount > 0 ? `Messages — ${unreadCount} new` : 'Messages — chat with your connections'}
+          >
             <Card>
               <h3 style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>Messages</h3>
               <p className="mono" style={{ fontSize: '28px', fontWeight: 800, color: unreadCount > 0 ? 'var(--red)' : 'var(--text-strong)' }}>

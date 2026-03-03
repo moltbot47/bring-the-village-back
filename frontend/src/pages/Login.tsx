@@ -62,11 +62,11 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 'var(--space-md)' }}>
               <label htmlFor="email" style={labelStyle}>Email</label>
-              <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} style={inputStyle} />
+              <input id="email" name="email" type="email" required autoComplete="email" value={form.email} onChange={handleChange} style={inputStyle} />
             </div>
             <div style={{ marginBottom: 'var(--space-md)' }}>
               <label htmlFor="password" style={labelStyle}>Password</label>
-              <input id="password" name="password" type="password" required value={form.password} onChange={handleChange} style={inputStyle} />
+              <input id="password" name="password" type="password" required autoComplete="current-password" value={form.password} onChange={handleChange} style={inputStyle} />
             </div>
 
             {error && <div role="alert" style={{ color: 'var(--red)', fontSize: '14px', marginBottom: 'var(--space-md)', fontWeight: 500 }}>{error}</div>}

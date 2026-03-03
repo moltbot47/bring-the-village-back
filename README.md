@@ -42,6 +42,8 @@ Copy `.env.example` and fill in values:
 | `DJANGO_SECRET_KEY` | prod only | Random secret key |
 | `DATABASE_URL` | prod only | PostgreSQL connection string |
 | `ANTHROPIC_API_KEY` | optional | Enables AI matching + feedback triage |
+| `SENTRY_DSN` | optional | Error tracking (sentry.io) |
+| `VITE_SENTRY_DSN` | optional | Frontend error tracking |
 | `VITE_ZEFFY_*` | optional | Zeffy donation form URLs |
 
 ## Architecture
@@ -58,7 +60,7 @@ backend/
   messaging/       # Polling-based messaging
   community/       # Events + RSVPs
   feedback/        # AI-triaged feedback system
-  tests/           # 64 pytest tests (89% coverage)
+  tests/           # 67 pytest tests (89% coverage)
 
 frontend/
   src/
@@ -72,12 +74,33 @@ frontend/
 ## Testing
 
 ```bash
-# Backend (from backend/)
-venv/bin/python -m pytest tests/ -v --cov=.
+# Backend unit/integration (67 tests, 89% coverage)
+cd backend && venv/bin/python -m pytest tests/ -v --cov=.
 
-# Frontend (from frontend/)
-npx vitest run
+# Frontend unit (15 tests)
+cd frontend && npx vitest run
+
+# E2E smoke tests (7 tests, requires dev server)
+cd frontend && npx playwright test
+
+# Load testing (requires locust)
+cd backend && locust -f tests/locustfile.py --host http://localhost:8000
 ```
+
+## Monitoring
+
+- **Health check**: `GET /api/health/` (liveness)
+- **Readiness probe**: `GET /api/health/detail/` (DB connectivity, version)
+- **Status page**: `/status` in the frontend app
+- **API docs**: `GET /api/docs/` (Swagger UI) / `GET /api/schema/` (OpenAPI JSON)
+- **Error tracking**: Sentry (set `SENTRY_DSN` env var)
+- **Request logging**: All requests logged with method, path, status, duration
+
+### Uptime Monitoring Setup
+
+Point any uptime monitoring service (UptimeRobot, Better Stack, Checkly) at:
+- `https://your-backend.up.railway.app/api/health/detail/`
+- Alert if response is not 200 or `status` is not `"ok"`
 
 ## Deploy
 

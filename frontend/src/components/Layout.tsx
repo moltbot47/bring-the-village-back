@@ -100,7 +100,7 @@ export default function Layout({ children }: LayoutProps) {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="desktop-nav" style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'center' }}>
+        <nav className="desktop-nav" aria-label="Main navigation" style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'center' }}>
           {navContent}
         </nav>
 
@@ -125,8 +125,10 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile menu overlay */}
       {mobileOpen && (
-        <div
+        <nav
           className="mobile-nav-overlay"
+          role="dialog"
+          aria-label="Mobile navigation"
           style={{
             position: 'fixed',
             top: 'var(--header-height)',
@@ -143,7 +145,7 @@ export default function Layout({ children }: LayoutProps) {
           }}
         >
           {navContent}
-        </div>
+        </nav>
       )}
 
       <main id="main-content">{children}</main>
