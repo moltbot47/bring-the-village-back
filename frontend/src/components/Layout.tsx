@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
@@ -33,6 +33,35 @@ export default function Layout({ children }: LayoutProps) {
   const { user, loading } = useAuth()
   const location = useLocation()
   const isLanding = location.pathname === '/'
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const navContent = (
+    <>
+      {isLanding && (
+        <>
+          <a href="#how-it-works" style={navLinkStyle} onClick={() => setMobileOpen(false)}>How It Works</a>
+          <a href="#support" style={navLinkStyle} onClick={() => setMobileOpen(false)}>Support Us</a>
+        </>
+      )}
+
+      {!loading && (
+        user ? (
+          <Link to="/dashboard" style={ctaBtnStyle} onClick={() => setMobileOpen(false)}>
+            Dashboard
+          </Link>
+        ) : (
+          <>
+            <Link to="/login" style={navLinkStyle} onClick={() => setMobileOpen(false)}>Sign In</Link>
+            {isLanding ? (
+              <a href="#waitlist" style={ctaBtnStyle} onClick={() => setMobileOpen(false)}>Join the Waitlist</a>
+            ) : (
+              <Link to="/register" style={ctaBtnStyle} onClick={() => setMobileOpen(false)}>Sign Up</Link>
+            )}
+          </>
+        )
+      )}
+    </>
+  )
 
   return (
     <>
@@ -70,32 +99,52 @@ export default function Layout({ children }: LayoutProps) {
           </span>
         </Link>
 
-        <nav style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'center' }}>
-          {isLanding && (
-            <>
-              <a href="#how-it-works" style={navLinkStyle}>How It Works</a>
-              <a href="#support" style={navLinkStyle}>Support Us</a>
-            </>
-          )}
-
-          {!loading && (
-            user ? (
-              <Link to="/dashboard" style={ctaBtnStyle}>
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" style={navLinkStyle}>Sign In</Link>
-                {isLanding ? (
-                  <a href="#waitlist" style={ctaBtnStyle}>Join the Waitlist</a>
-                ) : (
-                  <Link to="/register" style={ctaBtnStyle}>Sign Up</Link>
-                )}
-              </>
-            )
-          )}
+        {/* Desktop nav */}
+        <nav className="desktop-nav" style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'center' }}>
+          {navContent}
         </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          className="mobile-nav-toggle"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+          style={{
+            display: 'none',
+            background: 'none',
+            border: 'none',
+            fontSize: '24px',
+            cursor: 'pointer',
+            padding: '4px',
+            color: 'var(--text-strong)',
+          }}
+        >
+          {mobileOpen ? '✕' : '☰'}
+        </button>
       </header>
+
+      {/* Mobile menu overlay */}
+      {mobileOpen && (
+        <div
+          className="mobile-nav-overlay"
+          style={{
+            position: 'fixed',
+            top: 'var(--header-height)',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'var(--bg-surface)',
+            zIndex: 99,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 'var(--space-lg)',
+            padding: 'var(--space-2xl) var(--space-lg)',
+          }}
+        >
+          {navContent}
+        </div>
+      )}
 
       <main id="main-content">{children}</main>
 
@@ -115,20 +164,26 @@ export default function Layout({ children }: LayoutProps) {
             A community platform where single parents match and help each other.
             Because no one should have to do it alone.
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-lg)', fontSize: '13px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-lg)', fontSize: '13px', flexWrap: 'wrap' }}>
             <a href="mailto:hello@bringthevillageback.org" style={{ color: 'var(--text-faint)' }}>
               Contact
             </a>
             <span style={{ color: 'var(--border-bold)' }}>|</span>
-            <span style={{ color: 'var(--text-faint)' }}>
-              Houston, TX
-            </span>
+            <span style={{ color: 'var(--text-faint)' }}>Houston, TX</span>
           </div>
           <p style={{ fontSize: '12px', color: 'var(--border-bold)', marginTop: 'var(--space-lg)' }}>
             Bring the Village Back is a community organization.
           </p>
         </div>
       </footer>
+
+      {/* Mobile nav CSS */}
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-nav-toggle { display: block !important; }
+        }
+      `}</style>
     </>
   )
 }
