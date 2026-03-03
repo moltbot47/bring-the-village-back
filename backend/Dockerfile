@@ -3,7 +3,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 COPY pyproject.toml .
-RUN pip install --no-cache-dir django djangorestframework django-cors-headers gunicorn anthropic dj-database-url psycopg2-binary
+RUN pip install --no-cache-dir django djangorestframework django-cors-headers gunicorn anthropic dj-database-url psycopg2-binary drf-spectacular sentry-sdk[django]
 
 COPY . .
 
